@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GrowFX — Professional Trading Signals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.bunny.net/css?family=inter:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@font-face{font-family:'Inter';font-weight:100 900;font-display:swap;src:url('https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2') format('woff2')}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;font-family:inherit!important}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif!important;background:#080c18;color:#e2e8f0;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,h5,h6{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif!important}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#0d1120}::-webkit-scrollbar-thumb{background:#2563eb;border-radius:2px}
+:root{
+  --blue:#2563eb;--blue2:#3b82f6;--blue3:#1d4ed8;
+  --green:#10b981;--green2:rgba(16,185,129,.15);
+  --red:#ef4444;--red2:rgba(239,68,68,.15);
+  --amber:#f59e0b;
+  --bg:#080c18;--bg2:#0d1120;--bg3:#111827;
+  --card:#111827;--card2:#1a2235;--card3:#0f172a;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.12);
+  --t1:#f1f5f9;--t2:#94a3b8;--t3:#64748b;--t4:#475569;
+}
+
+/* ── TICKER ── */
+.ticker-wrap{background:#060a14;border-bottom:1px solid var(--border);overflow:hidden;position:relative;z-index:200}
+.ticker-track{display:flex;width:max-content;animation:tick 32s linear infinite}
+.ticker-track:hover{animation-play-state:paused}
+.ti{display:flex;align-items:center;gap:7px;padding:8px 24px 8px 0;font-size:11.5px;font-weight:500;white-space:nowrap;border-right:1px solid rgba(255,255,255,.05)}
+.ti-pair{color:var(--t3)}.ti-price{color:var(--t1);font-weight:600}.ti-up{color:var(--green)}.ti-dn{color:var(--red)}
+.ti-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}.ti-dot.u{background:var(--green)}.ti-dot.d{background:var(--red)}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:999;background:rgba(8,12,24,.96);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 32px}
+.n-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.n-icon{width:36px;height:36px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;box-shadow:0 0 18px rgba(37,99,235,.4);flex-shrink:0}
+.n-text b{display:block;font-size:14px;font-weight:700;color:#fff;line-height:1.1;letter-spacing:-.2px}
+.n-text span{font-size:9px;font-weight:600;color:var(--blue2);letter-spacing:2px;text-transform:uppercase}
+.n-links{display:flex;gap:2px;list-style:none}
+.n-links a{font-size:12.5px;font-weight:500;color:var(--t2);text-decoration:none;padding:5px 11px;border-radius:6px;transition:.2s}
+.n-links a:hover{color:#fff;background:rgba(255,255,255,.06)}
+.n-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;background:var(--blue);color:#fff;text-decoration:none;border-radius:7px;font-size:12.5px;font-weight:600;box-shadow:0 4px 18px rgba(37,99,235,.4);transition:all .25s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;border:none;cursor:pointer}
+.n-btn:hover{background:var(--blue2);transform:translateY(-1px);box-shadow:0 8px 26px rgba(37,99,235,.5)}
+.n-btn svg,.btn svg{width:15px;height:15px;flex-shrink:0}
+
+/* ── HERO ── */
+.hero{position:relative;min-height:580px;display:flex;align-items:center;overflow:hidden;background:var(--bg)}
+#heroCanvas{position:absolute;inset:0;width:100%;height:100%}
+.hero-grad{position:absolute;inset:0;background:linear-gradient(100deg,rgba(8,12,24,.97) 0%,rgba(8,12,24,.88) 50%,rgba(8,12,24,.25) 100%);pointer-events:none}
+.hero-grad-b{position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(to bottom,transparent,var(--bg));pointer-events:none}
+.hero-inner{position:relative;z-index:2;padding:72px 48px 72px;max-width:640px}
+.h-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 13px;background:rgba(37,99,235,.14);border:1px solid rgba(37,99,235,.3);border-radius:100px;font-size:10.5px;font-weight:700;color:#93c5fd;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:20px}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:blink 1.5s ease-in-out infinite;flex-shrink:0}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-size:clamp(34px,5vw,60px);font-weight:800;line-height:1.06;letter-spacing:-1.5px;color:#fff;margin-bottom:16px}
+.hero h1 .hl{background:linear-gradient(135deg,#60a5fa,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:15px;font-weight:400;color:var(--t2);line-height:1.75;margin-bottom:28px;max-width:460px}
+.hero-btns{display:flex;gap:11px;flex-wrap:wrap;margin-bottom:32px}
+.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;border-radius:8px;font-size:13.5px;font-weight:600;transition:all .25s cubic-bezier(.34,1.56,.64,1);cursor:pointer;border:none}
+.btn.primary{padding:12px 26px;background:var(--blue);color:#fff;box-shadow:0 5px 22px rgba(37,99,235,.45)}
+.btn.primary:hover{background:var(--blue2);transform:translateY(-2px);box-shadow:0 10px 30px rgba(37,99,235,.55)}
+.btn.ghost{padding:12px 22px;background:transparent;color:var(--t2);border:1px solid var(--border2)}
+.btn.ghost:hover{border-color:rgba(255,255,255,.22);color:#fff;background:rgba(255,255,255,.04)}
+
+/* ── LIVE STATUS BOXES ── */
+.status-boxes{display:flex;gap:12px;flex-wrap:wrap;margin-top:4px}
+.s-box{background:rgba(17,24,39,.7);border:1px solid var(--border);border-radius:10px;padding:12px 16px;min-width:110px;transition:.2s}
+.s-box:hover{border-color:rgba(37,99,235,.3);background:rgba(37,99,235,.05)}
+.s-box-val{font-size:20px;font-weight:800;color:#fff;line-height:1;letter-spacing:-.5px;margin-bottom:3px}
+.s-box-val.g{color:var(--green)}.s-box-val.b{color:var(--blue2)}.s-box-val.a{color:var(--amber)}
+.s-box-lbl{font-size:10px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:.8px}
+.s-box-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--green);margin-right:4px;animation:blink 1.5s ease-in-out infinite}
+
+/* ── STATS STRIP ── */
+.stats-strip{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:0 48px}
+.stats-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+.s-col{text-align:center;padding:24px 16px;border-right:1px solid var(--border);transition:background .2s}
+.s-col:last-child{border-right:none}
+.s-col:hover{background:rgba(255,255,255,.02)}
+.s-val{font-size:34px;font-weight:800;background:linear-gradient(135deg,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;letter-spacing:-1px}
+.s-lbl{font-size:11px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-top:5px}
+
+/* ── SECTIONS ── */
+.sec{padding:72px 48px}
+.wrap{max-width:1100px;margin:0 auto}
+.eyebrow{font-size:10.5px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue2);margin-bottom:9px;display:flex;align-items:center;gap:8px}
+.eyebrow::before{content:'';width:18px;height:2px;background:var(--blue);border-radius:2px;flex-shrink:0}
+.sec-h{font-size:clamp(26px,3.5vw,40px);font-weight:800;color:#fff;letter-spacing:-1px;line-height:1.1;margin-bottom:10px}
+.sec-p{font-size:14.5px;color:var(--t2);line-height:1.75;max-width:500px}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.vis{opacity:1;transform:none}
+
+/* ── SIGNAL CARDS (FXLeaders style) ── */
+.signals-sec{background:var(--bg2)}
+.sig-cards{display:flex;flex-direction:column;gap:14px;margin-top:40px;width:100%;overflow:hidden}
+.sig-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px 22px;transition:all .2s;position:relative;overflow:hidden;width:100%;contain:layout style}
+.sig-card:hover{border-color:rgba(37,99,235,.3);box-shadow:0 8px 32px rgba(0,0,0,.3);transform:translateY(-2px)}
+.sig-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--green)}
+.sig-card.sell::before{background:var(--red)}
+.sig-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.sig-card-left{display:flex;align-items:center;gap:12px}
+.sig-icon{width:40px;height:40px;border-radius:10px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:18px;border:1px solid var(--border);flex-shrink:0}
+.sig-pair-name{font-size:16px;font-weight:700;color:#fff;letter-spacing:-.3px}
+.sig-pair-sub{font-size:11px;color:var(--t3);margin-top:1px}
+.sig-tag-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.sig-dir{display:inline-flex;align-items:center;padding:4px 12px;border-radius:5px;font-size:11.5px;font-weight:700;letter-spacing:.3px}
+.sig-dir.buy{background:var(--green2);color:var(--green)}
+.sig-dir.sell{background:var(--red2);color:var(--red)}
+.sig-badge{padding:3px 9px;border-radius:4px;font-size:10px;font-weight:600;background:rgba(245,158,11,.12);color:var(--amber);border:1px solid rgba(245,158,11,.2);letter-spacing:.5px}
+.sig-active-dot{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;color:var(--green);font-weight:600}
+.sig-active-dot::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 1.5s ease-in-out infinite}
+.sig-prices{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:14px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:14px;width:100%;overflow:hidden}
+.sig-p-item{text-align:center;min-width:0;overflow:hidden}
+.sig-p-label{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;white-space:nowrap}
+.sig-p-val{font-size:13px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sig-p-val.entry{color:var(--blue2)}
+.sig-p-val.sl{color:var(--red)}
+.sig-p-val.tp{color:var(--green)}
+.sig-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.sig-analyst{display:flex;align-items:center;gap:8px}
+.sig-av{width:28px;height:28px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0}
+.sig-analyst-name{font-size:12px;font-weight:600;color:var(--t2)}
+.sig-analyst-time{font-size:10.5px;color:var(--t3)}
+.sig-pips{font-size:13px;font-weight:700;color:var(--green)}
+.sig-pips.neg{color:var(--red)}
+
+/* ── PREMIUM BANNER ── */
+.premium-banner{background:linear-gradient(135deg,var(--blue3),var(--blue),#1e40af);border-radius:16px;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:24px;position:relative;overflow:hidden}
+.pb-loop{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.pb-shimmer{position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);animation:shimmer 3s linear infinite}
+@keyframes shimmer{from{left:-100%}to{left:200%}}
+.pb-left{}
+.pb-title{font-size:17px;font-weight:800;color:#fff;margin-bottom:5px;letter-spacing:-.3px}
+.pb-sub{font-size:13px;color:rgba(255,255,255,.7);line-height:1.5}
+.pb-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:#fff;color:var(--blue3);border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;flex-shrink:0;transition:all .2s;border:none;cursor:pointer}
+.pb-btn:hover{background:#f0f9ff;transform:translateY(-1px)}
+
+/* ── NEWS RSS FEED ── */
+.news-sec{background:var(--bg)}
+.news-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:40px}
+.news-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:10px;transition:all .2s;text-decoration:none;cursor:pointer}
+.news-card:hover{border-color:rgba(37,99,235,.3);transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.news-cat{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:4px;font-size:9.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;width:fit-content}
+.news-cat.forex{background:rgba(37,99,235,.15);color:var(--blue2)}
+.news-cat.crypto{background:rgba(245,158,11,.13);color:var(--amber)}
+.news-cat.gold{background:rgba(16,185,129,.13);color:var(--green)}
+.news-cat.oil{background:rgba(239,68,68,.13);color:var(--red)}
+.news-title{font-size:14px;font-weight:700;color:#fff;line-height:1.4;letter-spacing:-.2px}
+.news-snippet{font-size:12.5px;color:var(--t2);line-height:1.65}
+.news-meta{display:flex;align-items:center;justify-content:space-between;margin-top:2px}
+.news-time{font-size:11px;color:var(--t3);font-weight:500}
+.news-src{font-size:10.5px;font-weight:600;color:var(--t3);padding:2px 7px;background:rgba(255,255,255,.05);border-radius:4px}
+.news-loading{grid-column:1/-1;text-align:center;padding:40px;color:var(--t3);font-size:13px}
+.news-pulse{display:flex;flex-direction:column;gap:10px}
+.pulse-line{height:12px;background:rgba(255,255,255,.06);border-radius:4px;animation:pulse-a 1.5s ease-in-out infinite}
+.pulse-line.short{width:40%}
+@keyframes pulse-a{0%,100%{opacity:.5}50%{opacity:1}}
+.news-refresh{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--t3);margin-top:12px;cursor:pointer;padding:6px 12px;background:rgba(255,255,255,.04);border-radius:6px;border:1px solid var(--border);width:fit-content;transition:.2s}
+.news-refresh:hover{color:var(--t2);border-color:var(--border2)}
+
+/* ── BLOG ── */
+.blog-sec{background:var(--bg2)}
+.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+.blog-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all .3s;cursor:pointer;text-decoration:none;display:block}
+.blog-card:hover{border-color:rgba(37,99,235,.3);transform:translateY(-5px);box-shadow:0 16px 48px rgba(0,0,0,.3)}
+.blog-thumb{height:140px;background:var(--card2);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.blog-thumb-inner{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px}
+.blog-thumb-grad{position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(to bottom,transparent,var(--card))}
+.blog-body{padding:18px}
+.blog-cat{font-size:9.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--blue2);margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.blog-title{font-size:14.5px;font-weight:700;color:#fff;line-height:1.4;letter-spacing:-.2px;margin-bottom:8px}
+.blog-excerpt{font-size:12.5px;color:var(--t2);line-height:1.65;margin-bottom:12px}
+.blog-footer{display:flex;align-items:center;justify-content:space-between}
+.blog-date{font-size:11px;color:var(--t3)}
+.blog-read{font-size:11px;font-weight:600;color:var(--blue2)}
+
+/* ── Q&A ── */
+.qa-sec{background:var(--bg)}
+.qa-list{display:flex;flex-direction:column;gap:10px;margin-top:40px;max-width:800px}
+.qa-item{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .2s}
+.qa-item.open{border-color:rgba(37,99,235,.3)}
+.qa-q{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;cursor:pointer;gap:12px;user-select:none}
+.qa-q:hover{background:rgba(255,255,255,.02)}
+.qa-q-text{font-size:14px;font-weight:600;color:#fff;line-height:1.4}
+.qa-icon{width:26px;height:26px;border-radius:6px;background:rgba(37,99,235,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s}
+.qa-item.open .qa-icon{background:var(--blue);transform:rotate(45deg)}
+.qa-icon::before,.qa-icon::after{content:'';position:absolute;background:#fff;border-radius:1px;transition:.3s}
+.qa-icon-wrap{position:relative;width:12px;height:12px}
+.qa-plus-h{position:absolute;top:50%;left:0;right:0;height:2px;background:#94a3b8;transform:translateY(-50%);transition:.3s}
+.qa-plus-v{position:absolute;left:50%;top:0;bottom:0;width:2px;background:#94a3b8;transform:translateX(-50%);transition:.3s}
+.qa-item.open .qa-plus-v{opacity:0;transform:translateX(-50%) rotate(90deg)}
+.qa-item.open .qa-plus-h{background:#fff}
+.qa-a{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.qa-a-inner{padding:0 20px 18px;font-size:13.5px;color:var(--t2);line-height:1.8;border-top:1px solid var(--border)}
+.qa-a-inner p{margin-bottom:10px;padding-top:14px}
+.qa-a-inner p:last-child{margin-bottom:0}
+.qa-a-inner strong{color:var(--t1);font-weight:600}
+
+/* ── ABOUT ── */
+.about-sec{background:var(--bg2)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-top:48px}
+.about-text p{font-size:14.5px;color:var(--t2);line-height:1.85;margin-bottom:14px}
+.about-text p:last-child{margin-bottom:0}
+.about-hl{color:var(--blue2);font-weight:600}
+.about-hl2{color:var(--green);font-weight:600}
+.about-cards{display:flex;flex-direction:column;gap:12px}
+.about-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start;transition:.2s}
+.about-card:hover{border-color:rgba(37,99,235,.3);background:rgba(37,99,235,.04)}
+.about-icon{width:38px;height:38px;min-width:38px;background:rgba(37,99,235,.12);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px}
+.about-card h4{font-size:13.5px;font-weight:700;color:#fff;margin-bottom:3px}
+.about-card p{font-size:12.5px;color:var(--t2);line-height:1.6}
+
+/* ── WHY / TESTIMONIALS ── */
+.why-sec{background:var(--bg)}
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start;margin-top:48px}
+.feat-list{display:flex;flex-direction:column;gap:12px}
+.feat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;display:flex;gap:13px;transition:.2s}
+.feat:hover{border-color:rgba(37,99,235,.3);background:rgba(37,99,235,.03)}
+.feat-ic{width:38px;height:38px;min-width:38px;background:rgba(37,99,235,.1);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.feat h4{font-size:13.5px;font-weight:700;color:#fff;margin-bottom:3px}
+.feat p{font-size:12.5px;color:var(--t2);line-height:1.6}
+.testi-list{display:flex;flex-direction:column;gap:12px}
+.testi{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;transition:.2s}
+.testi:hover{border-color:rgba(255,255,255,.12)}
+.stars{color:#fbbf24;font-size:12px;letter-spacing:1px;margin-bottom:9px}
+.testi-q{font-size:13px;color:var(--t2);line-height:1.7;font-style:italic;margin-bottom:13px}
+.testi-a{display:flex;align-items:center;gap:9px}
+.av{width:32px;height:32px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.av-n{font-size:12px;font-weight:700;color:#fff;display:block}
+.av-s{font-size:10.5px;color:var(--t3)}
+
+/* ── CTA SECTION ── */
+.cta-sec{background:var(--bg2);border-top:1px solid var(--border);padding:80px 48px;text-align:center;position:relative;overflow:hidden}
+.cta-glow{position:absolute;width:700px;height:700px;background:radial-gradient(circle,rgba(37,99,235,.1) 0%,transparent 65%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.cta-inner{position:relative;z-index:1}
+.cta-title{font-size:clamp(28px,4vw,44px);font-weight:800;color:#fff;letter-spacing:-1px;margin-bottom:12px}
+.cta-sub{font-size:15px;color:var(--t2);line-height:1.7;max-width:460px;margin:0 auto 36px}
+.cta-btns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.btn-lg{padding:14px 34px;font-size:14.5px;font-weight:700;border-radius:9px;display:inline-flex;align-items:center;gap:9px;text-decoration:none;transition:all .25s cubic-bezier(.34,1.56,.64,1);border:none;cursor:pointer}
+.btn-lg.p{background:var(--blue);color:#fff;box-shadow:0 7px 26px rgba(37,99,235,.45)}
+.btn-lg.p:hover{background:var(--blue2);transform:translateY(-2px);box-shadow:0 14px 38px rgba(37,99,235,.55)}
+.btn-lg svg{width:19px;height:19px}
+
+/* ── LEGAL ── */
+.legal-sec{background:var(--bg);border-top:1px solid var(--border);padding:64px 48px}
+.legal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:36px}
+.legal-card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:24px}
+.legal-card h3{font-size:14px;font-weight:700;color:#fff;margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.l-ic{width:26px;height:26px;background:rgba(37,99,235,.1);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.legal-card p{font-size:12px;color:var(--t2);line-height:1.8;margin-bottom:7px}
+.legal-card p:last-child{margin-bottom:0}
+.legal-card strong{color:var(--t1);font-weight:600}
+
+/* ── FOOTER ── */
+footer{background:#050810;border-top:1px solid var(--border);padding:40px 48px;text-align:center}
+.f-logo{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:12px;text-decoration:none}
+.f-tag{font-size:12.5px;color:var(--t3);margin-bottom:20px}
+.f-tg{display:inline-flex;align-items:center;gap:8px;padding:11px 26px;background:var(--blue);color:#fff;text-decoration:none;border-radius:8px;font-size:13.5px;font-weight:600;box-shadow:0 5px 22px rgba(37,99,235,.4);transition:all .25s cubic-bezier(.34,1.56,.64,1);margin-bottom:24px}
+.f-tg:hover{background:var(--blue2);transform:translateY(-2px)}
+.f-links{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.f-links a{font-size:11.5px;color:var(--t3);text-decoration:none;transition:.2s}
+.f-links a:hover{color:var(--t2)}
+.f-copy{font-size:10.5px;color:var(--t4)}
+
+/* ── MOBILE ── */
+@media(max-width:760px){#gdm-terms .wrap>div[style*="grid-template-columns:repeat(2"]{grid-template-columns:1fr!important}#gdm-terms{padding:56px 20px!important}}@media(max-width:960px){
+  #gdm-terms{padding:56px 20px!important}
+  #gdm-terms .tc-grid-2{grid-template-columns:1fr!important}
+  #gdm-terms .tc-grid-3{grid-template-columns:1fr!important}
+  nav{padding:0 16px}.n-links{display:none}
+  .hero-inner{padding:56px 20px}
+  .sec{padding:56px 20px}
+  .stats-strip{padding:0 20px}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .s-col:nth-child(2){border-right:none}
+  .s-col:nth-child(3){border-top:1px solid var(--border);border-right:1px solid var(--border)}
+  .s-col:nth-child(4){border-top:1px solid var(--border);border-right:none}
+  .news-grid{grid-template-columns:1fr}
+  .blog-grid{grid-template-columns:1fr}
+  .why-grid{grid-template-columns:1fr}
+  .about-grid{grid-template-columns:1fr;gap:36px}
+  .legal-grid{grid-template-columns:1fr}
+  .cta-sec{padding:60px 20px}
+  .legal-sec{padding:60px 20px}
+  footer{padding:36px 20px}
+  .signals-sec .wrap{overflow:hidden}
+  .sig-cards{overflow:hidden}
+  .premium-banner{padding:22px 20px}
+  .sig-card{padding:16px 14px}
+  .sig-prices{grid-template-columns:repeat(3,1fr);gap:4px;padding:12px 0}
+  .sig-p-label{font-size:8.5px;letter-spacing:.5px}
+  .sig-p-val{font-size:12px}
+  .sig-pair-name{font-size:14px}
+  .sig-card-top{gap:6px}
+  .status-boxes .s-box{min-width:90px}
+}
+@media(max-width:480px){
+  .hero h1{letter-spacing:-1px}
+  .hero-btns{flex-direction:column}
+  .btn.primary,.btn.ghost{justify-content:center}
+  .cta-btns{flex-direction:column;align-items:center}
+  .btn-lg{width:100%;max-width:300px;justify-content:center}
+  .status-boxes{gap:8px}
+  .s-box{flex:1;min-width:70px}
+  .sig-prices{gap:2px}
+  .sig-p-val{font-size:11.5px}
+  .sig-p-label{font-size:8px}
+  .sig-tag-row{gap:5px}
+  .sig-dir{padding:3px 9px;font-size:10.5px}
+  .sig-badge{font-size:9px;padding:2px 7px}
+}
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker-wrap"><div class="ticker-track" id="tickerEl"></div></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="n-logo">
+    <div class="n-icon">GF</div>
+    <div class="n-text"><b>GrowFX</b><span>Get Set Grow</span></div>
+  </a>
+  <ul class="n-links">
+    <li><a href="#signals">Signals</a></li>
+    <li><a href="#news">News</a></li>
+    <li><a href="#blog">Blog</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#gdm-terms">Advertiser Policy</a></li>
+    <li><a href="#legal">Legal</a></li>
+  </ul>
+  <a href="#join" class="n-btn">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.932z"/></svg>
+    Get Set Grow ↗
+  </a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-grad"></div>
+  <div class="hero-grad-b"></div>
+  <div class="hero-inner">
+    <div class="h-badge"><span class="live-dot"></span>Live Signals Active Now</div>
+    <h1>Professional<br>Forex Signals<br><span class="hl">That Win.</span></h1>
+    <p class="hero-sub">Real-time signals with full analysis — Entry, Stop Loss & Take Profit. Trusted by 5,000+ traders worldwide.</p>
+    <div class="hero-btns">
+      <a href="#join" class="btn primary">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.932z"/></svg>
+        Get Set Grow ↗
+      </a>
+      <a href="#signals" class="btn ghost">View Signals →</a>
+    </div>
+    <!-- LIVE STATUS BOXES -->
+    <div class="status-boxes">
+      <div class="s-box">
+        <div class="s-box-val g" id="activeCount"><span class="s-box-dot"></span>5</div>
+        <div class="s-box-lbl">Active Signals</div>
+      </div>
+      <div class="s-box">
+        <div class="s-box-val b" id="todayPips">+485</div>
+        <div class="s-box-lbl">Today's Pips</div>
+      </div>
+      <div class="s-box">
+        <div class="s-box-val a">94%</div>
+        <div class="s-box-lbl">Win Rate</div>
+      </div>
+      <div class="s-box">
+        <div class="s-box-val" style="color:#f1f5f9">12K+</div>
+        <div class="s-box-lbl">Monthly Pips</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS STRIP -->
+<div class="stats-strip">
+  <div class="stats-grid">
+    <div class="s-col reveal"><div class="s-val">5,000+</div><div class="s-lbl">Active Members</div></div>
+    <div class="s-col reveal"><div class="s-val">94%</div><div class="s-lbl">Accuracy Rate</div></div>
+    <div class="s-col reveal"><div class="s-val">12K+</div><div class="s-lbl">Pips This Month</div></div>
+    <div class="s-col reveal"><div class="s-val">3 Yrs</div><div class="s-lbl">Track Record</div></div>
+  </div>
+</div>
+
+<!-- SIGNALS SECTION -->
+<section class="sec signals-sec" id="signals">
+  <div class="wrap">
+    <div class="eyebrow reveal">Live Signals</div>
+    <h2 class="sec-h reveal">Today's Trading Signals</h2>
+    <p class="sec-p reveal">Every signal includes Entry Price, Stop Loss, and Take Profit. Updated in real-time on our Telegram channel.</p>
+
+    <div class="sig-cards" id="sigCards">
+      <!-- Signal 1 -->
+      <div class="sig-card reveal">
+        <div class="sig-card-top">
+          <div class="sig-card-left">
+            <div class="sig-icon">🥇</div>
+            <div>
+              <div class="sig-pair-name">XAU/USD</div>
+              <div class="sig-pair-sub">Gold · Spot Metals</div>
+            </div>
+          </div>
+          <div class="sig-tag-row">
+            <span class="sig-dir buy">BUY</span>
+            <span class="sig-badge">Long Term</span>
+            <span class="sig-active-dot">Active</span>
+          </div>
+        </div>
+        <div class="sig-prices">
+          <div class="sig-p-item"><div class="sig-p-label">Entry Price</div><div class="sig-p-val entry">2,298.00</div></div>
+          <div class="sig-p-item"><div class="sig-p-label">Stop Loss</div><div class="sig-p-val sl">2,265.00</div></div>
+          <div class="sig-p-item"><div class="sig-p-label">Take Profit</div><div class="sig-p-val tp">2,358.00</div></div>
+        </div>
+        <div class="sig-footer">
+          <div class="sig-analyst">
+            <div class="sig-av">GF</div>
+            <div><div class="sig-analyst-name">GrowFX Analyst</div><div class="sig-analyst-time">Today · 09:30 AM</div></div>
+          </div>
+          <div class="sig-pips">+220 pips ✓</div>
+        </div>
+      </div>
+
+      <!-- Signal 2 -->
+      <div class="sig-card sell reveal">
+        <div class="sig-card-top">
+          <div class="sig-card-left">
+            <div class="sig-icon">🇪🇺</div>
+            <div>
+              <div class="sig-pair-name">EUR/USD</div>
+              <div class="sig-pair-sub">Forex · Major Pair</div>
+            </div>
+          </div>
+          <div class="sig-tag-row">
+            <span class="sig-dir sell">SELL</span>
+            <span class="sig-badge">Intraday</span>
+            <span class="sig-active-dot">Active</span>
+          </div>
+        </div>
+        <div class="sig-prices">
+          <div class="sig-p-item"><div class="sig-p-label">Entry Price</div><div class="sig-p-val entry">1.0920</div></div>
+          <div class="sig-p-item"><div class="sig-p-label">Stop Loss</div><div class="sig-p-val sl">1.0955</div></div>
+          <div class="sig-p-item"><div class="sig-p-label">Take Profit</div><div class="sig-p-val tp">1.0860</div></div>
+        </div>
+        <div class="sig-footer">
+          <div class="sig-analyst">
+            <div class="sig-av">GF</div>
+            <div><div class="sig-analyst-name">GrowFX Analyst</div><div class="sig-analyst-time">Today · 11:00 AM</div></div>
+          </div>
+          <div class="sig-pips">+85 pips ✓</div>
+        </div>
+      </div>
+
+      <!-- Signal 3 -->
+      <div class="sig-card reveal">
+        <div class="sig-card-top">
+          <div class="sig-card-left">
+            <div class="sig-icon">🇬🇧</div>
+            <div>
+              <div class="sig-pair-name">GBP/JPY</div>
+              <div class="sig-pair-sub">Forex · Cross Pair</div>
+            </div>
+          </div>
+          <div class="sig-tag-row">
+            <span class="sig-dir buy">BUY</span>
+            <span class="sig-badge">Swing</span>
+            <span style="font-size:10.5px;color:var(--t3);font-weight:500">Closed +120 pips</span>
+          </div>
+        </div>
+        <div class="sig-prices">
+          <div class="sig-p-item"><div class="sig-p-label">Entry Price</div><div class="sig-p-val entry">191.850</div></div>
+          <div class="sig-p-item"><div class="sig-p-label">Stop Loss</div><div class="sig-p-val sl">190.900</div></div>
+          <div class="sig-p-item"><div class="sig-p-label">Take Profit</div><div class="sig-p-val tp">193.050</div></div>
+        </div>
+        <div class="sig-footer">
+          <div class="sig-analyst">
+            <div class="sig-av">GF</div>
+            <div><div class="sig-analyst-name">GrowFX Analyst</div><div class="sig-analyst-time">Yesterday · 02:15 PM</div></div>
+          </div>
+          <div class="sig-pips">+120 pips ✓</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PREMIUM BANNER -->
+    <div class="premium-banner reveal">
+      <div class="pb-loop"><div class="pb-shimmer"></div></div>
+      <div class="pb-left">
+        <div class="pb-title">🔔 Don't Miss Any Signal</div>
+        <div class="pb-sub">Join our Telegram channel — get instant alerts for every new signal, analysis update, and market news. 100% Free.</div>
+      </div>
+      <a href="#join" class="pb-btn">
+        <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.932z"/></svg>
+        Join Free — Get Set Grow
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- NEWS FEED -->
+<section class="sec news-sec" id="news">
+  <div class="wrap">
+    <div class="eyebrow reveal">Market Intelligence</div>
+    <h2 class="sec-h reveal">Forex & Crypto News Feed</h2>
+    <p class="sec-p reveal">Latest market-moving news from global financial sources — updated automatically.</p>
+    <div class="news-grid" id="newsGrid">
+      <div class="news-loading">
+        <div class="news-pulse"><div class="pulse-line"></div><div class="pulse-line short"></div><div class="pulse-line"></div></div>
+      </div>
+    </div>
+    <div class="news-refresh" id="refreshBtn" onclick="loadNews()">
+      <svg style="width:13px;height:13px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+      Refresh News
+    </div>
+  </div>
+</section>
+
+<!-- BLOG SECTION -->
+<section class="sec blog-sec" id="blog">
+  <div class="wrap">
+    <div class="eyebrow reveal">Education & Insights</div>
+    <h2 class="sec-h reveal">Forex Trading Blog</h2>
+    <p class="sec-p reveal">In-depth articles, strategy guides, and market analysis written by professional traders.</p>
+    <div class="blog-grid">
+      <a href="#blog" class="blog-card reveal">
+        <div class="blog-thumb" style="background:linear-gradient(135deg,#0f172a,#1e3a5f)">
+          <div class="blog-thumb-inner">📊</div>
+          <div class="blog-thumb-grad"></div>
+        </div>
+        <div class="blog-body">
+          <div class="blog-cat">📘 Strategy</div>
+          <div class="blog-title">How to Trade Support & Resistance Levels Like a Pro</div>
+          <div class="blog-excerpt">Master the key price zones where institutional traders place their orders — and learn to enter with precision every time.</div>
+          <div class="blog-footer"><span class="blog-date">May 25, 2025</span><span class="blog-read">5 min read →</span></div>
+        </div>
+      </a>
+      <a href="#blog" class="blog-card reveal">
+        <div class="blog-thumb" style="background:linear-gradient(135deg,#0f2518,#14532d)">
+          <div class="blog-thumb-inner">💰</div>
+          <div class="blog-thumb-grad"></div>
+        </div>
+        <div class="blog-body">
+          <div class="blog-cat" style="color:var(--green)">📗 Risk Management</div>
+          <div class="blog-title">The 2% Rule: Why Professional Traders Never Blow Their Accounts</div>
+          <div class="blog-excerpt">Understanding position sizing and risk-per-trade is the single most important skill separating profitable traders from losing ones.</div>
+          <div class="blog-footer"><span class="blog-date">May 20, 2025</span><span class="blog-read">4 min read →</span></div>
+        </div>
+      </a>
+      <a href="#blog" class="blog-card reveal">
+        <div class="blog-thumb" style="background:linear-gradient(135deg,#1a0f1a,#4c1d95)">
+          <div class="blog-thumb-inner">🧠</div>
+          <div class="blog-thumb-grad"></div>
+        </div>
+        <div class="blog-body">
+          <div class="blog-cat" style="color:#a78bfa">🧠 Psychology</div>
+          <div class="blog-title">Trading Psychology: How to Remove Emotion From Your Trades</div>
+          <div class="blog-excerpt">Fear and greed destroy more accounts than bad strategies. Here's a practical guide to building iron-clad mental discipline.</div>
+          <div class="blog-footer"><span class="blog-date">May 15, 2025</span><span class="blog-read">6 min read →</span></div>
+        </div>
+      </a>
+      <a href="#blog" class="blog-card reveal">
+        <div class="blog-thumb" style="background:linear-gradient(135deg,#1a0e00,#78350f)">
+          <div class="blog-thumb-inner">🥇</div>
+          <div class="blog-thumb-grad"></div>
+        </div>
+        <div class="blog-body">
+          <div class="blog-cat" style="color:var(--amber)">⚡ Analysis</div>
+          <div class="blog-title">Gold (XAU/USD) Technical Analysis — May 2025 Outlook</div>
+          <div class="blog-excerpt">Full chart breakdown of Gold's current structure, key support/resistance levels, and our bias for the coming weeks.</div>
+          <div class="blog-footer"><span class="blog-date">May 10, 2025</span><span class="blog-read">7 min read →</span></div>
+        </div>
+      </a>
+      <a href="#blog" class="blog-card reveal">
+        <div class="blog-thumb" style="background:linear-gradient(135deg,#0f1a2e,#1e3a8a)">
+          <div class="blog-thumb-inner">📉</div>
+          <div class="blog-thumb-grad"></div>
+        </div>
+        <div class="blog-body">
+          <div class="blog-cat">📘 Education</div>
+          <div class="blog-title">EUR/USD Fundamental Analysis: Key Economic Drivers Explained</div>
+          <div class="blog-excerpt">Understanding what moves the most traded currency pair in the world — interest rates, inflation, GDP and Central Bank policy.</div>
+          <div class="blog-footer"><span class="blog-date">May 5, 2025</span><span class="blog-read">8 min read →</span></div>
+        </div>
+      </a>
+      <a href="#blog" class="blog-card reveal">
+        <div class="blog-thumb" style="background:linear-gradient(135deg,#0a1a0a,#14532d)">
+          <div class="blog-thumb-inner">🚀</div>
+          <div class="blog-thumb-grad"></div>
+        </div>
+        <div class="blog-body">
+          <div class="blog-cat" style="color:var(--green)">📗 Beginners</div>
+          <div class="blog-title">Complete Beginner's Guide to Forex Trading in 2025</div>
+          <div class="blog-excerpt">Everything a new trader needs to know — from understanding pips and lots to placing your first trade with confidence.</div>
+          <div class="blog-footer"><span class="blog-date">Apr 28, 2025</span><span class="blog-read">10 min read →</span></div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ / Q&A -->
+<section class="sec qa-sec" id="faq">
+  <div class="wrap">
+    <div class="eyebrow reveal">FAQ</div>
+    <h2 class="sec-h reveal">Frequently Asked Questions</h2>
+    <p class="sec-p reveal">Everything you need to know about GrowFX signals and how to get started.</p>
+    <div class="qa-list" id="qaList">
+      <div class="qa-item">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">What are Forex signals and how do they work?</span>
+          <div class="qa-icon"><div class="qa-icon-wrap"><div class="qa-plus-h"></div><div class="qa-plus-v"></div></div></div>
+        </div>
+        <div class="qa-a"><div class="qa-a-inner"><p>Forex signals are <strong>trade recommendations</strong> that tell you exactly when to buy or sell a currency pair. Each signal includes an Entry Price (where to open the trade), a Stop Loss (where to exit if the trade goes wrong), and a Take Profit (your target profit level). At GrowFX, our signals are generated through <strong>technical and fundamental analysis</strong> by experienced traders — giving you a clear, actionable trade idea without needing to do the analysis yourself.</p></div></div>
+      </div>
+      <div class="qa-item">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">How do I receive GrowFX signals?</span>
+          <div class="qa-icon"><div class="qa-icon-wrap"><div class="qa-plus-h"></div><div class="qa-plus-v"></div></div></div>
+        </div>
+        <div class="qa-a"><div class="qa-a-inner"><p>All signals are delivered through our <strong>official Telegram channel</strong>. Simply click the "Join Telegram" button and you'll be instantly added to the group. You'll receive a notification on your phone the moment a new signal is published — including all Entry, Stop Loss, and Take Profit levels. We also post <strong>trade updates</strong> (e.g., move SL to breakeven) and results in the same channel.</p></div></div>
+      </div>
+      <div class="qa-item">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">What currency pairs do you cover?</span>
+          <div class="qa-icon"><div class="qa-icon-wrap"><div class="qa-plus-h"></div><div class="qa-plus-v"></div></div></div>
+        </div>
+        <div class="qa-a"><div class="qa-a-inner"><p>We cover all <strong>major, minor, and select exotic pairs</strong>. Our most active pairs include:</p><p>• <strong>Majors:</strong> EUR/USD, GBP/USD, USD/JPY, USD/CHF, AUD/USD, USD/CAD, NZD/USD<br>• <strong>Crosses:</strong> GBP/JPY, EUR/JPY, GBP/AUD, EUR/GBP<br>• <strong>Commodities:</strong> XAU/USD (Gold), XAG/USD (Silver), WTI Oil</p><p>Signals are based on <strong>highest-probability setups</strong> — we only send signals when the analysis is clear and the risk/reward is favorable.</p></div></div>
+      </div>
+      <div class="qa-item">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">Is GrowFX free to join?</span>
+          <div class="qa-icon"><div class="qa-icon-wrap"><div class="qa-plus-h"></div><div class="qa-plus-v"></div></div></div>
+        </div>
+        <div class="qa-a"><div class="qa-a-inner"><p><strong>Yes — completely free.</strong> Our Telegram channel is 100% free to join. You'll get access to all signals, market analysis, and trade updates at no cost. We believe in building trust through results first. Simply tap the Join Telegram button and you're in — <strong>no registration, no credit card, no hidden fees.</strong></p></div></div>
+      </div>
+      <div class="qa-item">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">What is the win rate of your signals?</span>
+          <div class="qa-icon"><div class="qa-icon-wrap"><div class="qa-plus-h"></div><div class="qa-plus-v"></div></div></div>
+        </div>
+        <div class="qa-a"><div class="qa-a-inner"><p>Our verified win rate over the last 90 days stands at <strong>94%</strong>. We achieve this by only signaling <strong>high-probability setups</strong> with clear structure and a minimum 1:3 risk-to-reward ratio. Not every signal wins — no one can guarantee 100% — but our strict analysis process ensures we maintain consistent profitability. Historical performance reports are available in the Telegram channel.</p></div></div>
+      </div>
+      <div class="qa-item">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">How many signals do you send per day?</span>
+          <div class="qa-icon"><div class="qa-icon-wrap"><div class="qa-plus-h"></div><div class="qa-plus-v"></div></div></div>
+        </div>
+        <div class="qa-a"><div class="qa-a-inner"><p>We send an average of <strong>3–7 signals per day</strong>, depending on market conditions. Quality is always prioritized over quantity — we never force trades when the market is unclear or conditions are unfavorable. During high-impact news events (e.g., NFP, FOMC), we may pause signals to protect our members from unpredictable volatility.</p></div></div>
+      </div>
+      <div class="qa-item">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">Do I need trading experience to follow your signals?</span>
+          <div class="qa-icon"><div class="qa-icon-wrap"><div class="qa-plus-h"></div><div class="qa-plus-v"></div></div></div>
+        </div>
+        <div class="qa-a"><div class="qa-a-inner"><p><strong>No prior experience is needed.</strong> Our signals are designed to be simple to follow — even for complete beginners. Each signal tells you exactly: what pair to trade, whether to buy or sell, where to enter, where to place your stop loss, and where to take profit. We also post educational content in the channel to help new traders understand the "why" behind each trade. <strong>Beginners are welcome.</strong></p></div></div>
+      </div>
+      <div class="qa-item">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">What broker should I use to trade your signals?</span>
+          <div class="qa-icon"><div class="qa-icon-wrap"><div class="qa-plus-h"></div><div class="qa-plus-v"></div></div></div>
+        </div>
+        <div class="qa-a"><div class="qa-a-inner"><p>Our signals are <strong>broker-independent</strong> — you can use any regulated Forex broker that offers the pairs we cover. We recommend brokers with tight spreads, fast execution, and proper regulation (FCA, CySEC, ASIC). Popular choices among our members include <strong>IC Markets, Exness, FP Markets, and XM.</strong> Always ensure your broker is regulated before depositing funds. Never trade with money you cannot afford to lose.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="sec about-sec" id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <div class="eyebrow">About GrowFX</div>
+        <h2 class="sec-h">Real Traders.<br>Real Signals.</h2>
+        <p>At <span class="about-hl">GrowFX</span>, we are traders first — not just analysts behind a screen. Our mission is to deliver clear, actionable <span class="about-hl">trading signals</span> that make sense in fast-moving markets.</p>
+        <p>With over <span class="about-hl2">3 years of verified trading experience</span>, we monitor global markets around the clock — cutting through the noise to deliver timely Forex, Gold, and commodity signals backed by real technical and fundamental analysis.</p>
+        <p>Whether you are just starting or refining <span class="about-hl">advanced strategies</span>, we help you trade smarter with insights, discipline, and support you can rely on. <span class="about-hl2">Straightforward signals. Clear strategies. Better trading decisions.</span></p>
+      </div>
+      <div class="about-cards">
+        <div class="about-card reveal">
+          <div class="about-icon">🎯</div>
+          <div><h4>Precision Entry & Exit</h4><p>Every signal includes exact Entry, Stop Loss and Take Profit levels — no guessing required.</p></div>
+        </div>
+        <div class="about-card reveal">
+          <div class="about-icon">📡</div>
+          <div><h4>Instant Telegram Delivery</h4><p>Signals delivered the moment they're identified — directly to your phone via Telegram push notifications.</p></div>
+        </div>
+        <div class="about-card reveal">
+          <div class="about-icon">🔬</div>
+          <div><h4>Full Technical Analysis</h4><p>We post chart breakdowns with marked levels and trend direction, so you understand every trade.</p></div>
+        </div>
+        <div class="about-card reveal">
+          <div class="about-icon">🌍</div>
+          <div><h4>Global Coverage</h4><p>Major Forex pairs, Gold, Silver, Oil, and cross pairs — all covered daily with institutional-grade analysis.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY + TESTIMONIALS -->
+<section class="sec why-sec" id="why">
+  <div class="wrap">
+    <div class="why-grid">
+      <div>
+        <div class="eyebrow reveal">Why Join Us</div>
+        <h2 class="sec-h reveal">What Our Members Get</h2>
+        <p class="sec-p reveal" style="margin-bottom:28px">Everything you need to trade profitably — delivered daily.</p>
+        <div class="feat-list">
+          <div class="feat reveal"><div class="feat-ic">⚡</div><div><h4>3–7 Daily Signals</h4><p>Quality setups only — never forced trades. Only high-probability entries with clear R:R.</p></div></div>
+          <div class="feat reveal"><div class="feat-ic">📊</div><div><h4>Technical Chart Analysis</h4><p>Chart breakdowns with key zones, bias direction, and entry logic for every signal.</p></div></div>
+          <div class="feat reveal"><div class="feat-ic">🏆</div><div><h4>94% Verified Win Rate</h4><p>Consistent performance tracked and published in the channel — full transparency.</p></div></div>
+          <div class="feat reveal"><div class="feat-ic">💬</div><div><h4>Active Trader Community</h4><p>5,000+ members, live discussions, trade reviews, and direct Q&A with the analyst team.</p></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="eyebrow reveal">Member Reviews</div>
+        <h2 class="sec-h reveal">What Traders Say</h2>
+        <div class="testi-list" style="margin-top:28px">
+          <div class="testi reveal">
+            <div class="stars">★★★★★</div>
+            <div class="testi-q">"GrowFX signals changed my trading career. +3,200 pips in the first month. The analysis is spot-on and the entry levels are incredibly accurate."</div>
+            <div class="testi-a"><div class="av">AK</div><div><span class="av-n">Ahmad Khan</span><span class="av-s">Trader · Dubai, UAE</span></div></div>
+          </div>
+          <div class="testi reveal">
+            <div class="stars">★★★★★</div>
+            <div class="testi-q">"Best Forex channel I've found. Clear entries and exits every time. My account grew 40% in just 3 months by following each signal properly."</div>
+            <div class="testi-a"><div class="av">SA</div><div><span class="av-n">Sara Ahsan</span><span class="av-s">Trader · Karachi, PK</span></div></div>
+          </div>
+          <div class="testi reveal">
+            <div class="stars">★★★★★</div>
+            <div class="testi-q">"I've tried many providers — GrowFX is the only one consistently profitable. The accuracy is outstanding and the team is very responsive."</div>
+            <div class="testi-a"><div class="av">MR</div><div><span class="av-n">Mohammed Raza</span><span class="av-s">Trader · London, UK</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-sec" id="join">
+  <div class="cta-glow"></div>
+  <div class="cta-inner">
+    <div class="eyebrow reveal" style="justify-content:center">Get Started</div>
+    <h2 class="cta-title reveal">Start Receiving Signals Today</h2>
+    <p class="cta-sub reveal">Join thousands of traders already profiting with GrowFX — free on Telegram, instant access.</p>
+    <div class="cta-btns reveal">
+      <a href="#join" class="btn-lg p">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.932z"/></svg>
+        GrowFX — Get Set Grow ↗
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- GROWTHLY DIGITAL MARKETING T&C SECTION -->
+<section id="gdm-terms" style="background:#f8fafc;border-top:3px solid #e2e8f0;padding:72px 48px">
+  <div class="wrap" style="max-width:1100px;margin:0 auto">
+
+    <!-- Header -->
+    <div style="display:flex;align-items:flex-start;gap:20px;margin-bottom:40px;flex-wrap:wrap">
+      <div style="width:52px;height:52px;min-width:52px;background:#1e40af;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px">📋</div>
+      <div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#2563eb;margin-bottom:6px">Advertiser Policy Document</div>
+        <h2 style="font-size:clamp(20px,3vw,30px);font-weight:800;color:#0f172a;letter-spacing:-.5px;line-height:1.2;margin-bottom:6px">Growthly Digital Marketing Pvt Ltd</h2>
+        <p style="font-size:13.5px;color:#64748b;line-height:1.6">Terms & Conditions — Forex, Cryptocurrency & Financial Services Advertisements</p>
+      </div>
+    </div>
+
+    <!-- Notice Banner -->
+    <div style="background:#eff6ff;border:1px solid #bfdbfe;border-left:4px solid #2563eb;border-radius:10px;padding:16px 20px;margin-bottom:32px;display:flex;gap:12px;align-items:flex-start">
+      <span style="font-size:18px;flex-shrink:0">ℹ️</span>
+      <p style="font-size:13px;color:#1e40af;line-height:1.7;margin:0"><strong>Important Notice:</strong> By engaging Growthly Digital Marketing Pvt Ltd for any Forex, Cryptocurrency, or Financial Services advertising campaign, you acknowledge that you have read, understood, and unconditionally agreed to all terms outlined in this document. These terms are legally binding and non-negotiable.</p>
+    </div>
+
+    <!-- Cards Grid -->
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-bottom:18px">
+
+      <!-- Card 1 -->
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:24px;border-top:3px solid #2563eb">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <div style="width:34px;height:34px;background:#eff6ff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">✅</div>
+          <h3 style="font-size:14.5px;font-weight:700;color:#0f172a">Meta Ads Authorization — Mandatory</h3>
+        </div>
+        <p style="font-size:13px;color:#475569;line-height:1.8;margin-bottom:8px">All advertisers must hold a valid <strong style="color:#0f172a">Meta Business Manager account</strong> with full admin access and active payment method before any campaign is initiated.</p>
+        <p style="font-size:13px;color:#475569;line-height:1.8;margin-bottom:8px">Advertisers promoting Forex, Crypto, or Financial Services are required to obtain <strong style="color:#0f172a">Meta Financial Products & Services Permission</strong> prior to campaign launch. Growthly Digital Marketing will not be responsible for ad account restrictions arising from non-compliance with Meta's financial advertising policies.</p>
+        <p style="font-size:13px;color:#475569;line-height:1.8;margin:0">Failure to maintain approved Meta permissions may result in immediate campaign suspension without liability to Growthly Digital Marketing.</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:24px;border-top:3px solid #10b981">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <div style="width:34px;height:34px;background:#f0fdf4;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">🌐</div>
+          <h3 style="font-size:14.5px;font-weight:700;color:#0f172a">Landing Page / Website — Mandatory</h3>
+        </div>
+        <p style="font-size:13px;color:#475569;line-height:1.8;margin-bottom:8px">All financial services advertisements must link to a <strong style="color:#0f172a">live, functional website or landing page</strong> hosted on a registered domain. Advertisements directing users to Telegram channels, WhatsApp groups, or social media profiles as primary destinations are strictly prohibited under Meta's policies.</p>
+        <p style="font-size:13px;color:#475569;line-height:1.8;margin-bottom:8px">The landing page must include: full business name, service description, risk disclaimer for financial products, privacy policy, terms of service, and contact information.</p>
+        <p style="font-size:13px;color:#475569;line-height:1.8;margin:0">Growthly Digital Marketing reserves the right to refuse services if the provided landing page does not meet Meta's compliance standards.</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:24px;border-top:3px solid #f59e0b">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <div style="width:34px;height:34px;background:#fffbeb;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">🏢</div>
+          <h3 style="font-size:14.5px;font-weight:700;color:#0f172a">Business Registration — Mandatory</h3>
+        </div>
+        <p style="font-size:13px;color:#475569;line-height:1.8;margin-bottom:8px">Advertisers offering Forex signals, investment services, cryptocurrency products, or any regulated financial instrument must provide <strong style="color:#0f172a">valid business registration documentation</strong> before campaign commencement.</p>
+        <p style="font-size:13px;color:#475569;line-height:1.8;margin-bottom:8px">Required documents include: Certificate of Incorporation or Business Registration, National Tax Number (NTN) or equivalent, and valid CNIC/Passport of the authorized signatory.</p>
+        <p style="font-size:13px;color:#475569;line-height:1.8;margin:0">Operating without proper registration in your jurisdiction may violate local financial regulations. Growthly Digital Marketing bears no liability for regulatory non-compliance by the advertiser.</p>
+      </div>
+
+      <!-- Card 4 -->
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:24px;border-top:3px solid #8b5cf6">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <div style="width:34px;height:34px;background:#f5f3ff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">⚖️</div>
+          <h3 style="font-size:14.5px;font-weight:700;color:#0f172a">Financial Services Legal Compliance</h3>
+        </div>
+        <p style="font-size:13px;color:#475569;line-height:1.8;margin-bottom:8px">All advertised Forex or Cryptocurrency services must include a prominent <strong style="color:#0f172a">risk disclosure statement</strong> on all creatives and landing pages: <em>"Trading Forex and Cryptocurrency involves significant risk of loss. Past performance is not indicative of future results. Only trade with capital you can afford to lose."</em></p>
+        <p style="font-size:13px;color:#475569;line-height:1.8;margin:0">Advertisers must not make guaranteed profit claims, promise specific returns, or mislead consumers about the nature of financial risk. Violations will result in immediate campaign termination with no refund.</p>
+      </div>
+    </div>
+
+    <!-- SCAM / FRAUD POLICY — Full width, warning style -->
+    <div style="background:#fff;border:1px solid #fecaca;border-radius:14px;padding:28px;border-top:3px solid #ef4444;margin-bottom:18px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+        <div style="width:34px;height:34px;background:#fef2f2;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">🚫</div>
+        <h3 style="font-size:15px;font-weight:800;color:#0f172a">Fraud, Scam & Misleading Content — Zero Tolerance Policy</h3>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div>
+          <p style="font-size:13px;color:#475569;line-height:1.8;margin-bottom:8px"><strong style="color:#dc2626">Immediate Campaign Discontinuation:</strong> If Growthly Digital Marketing detects, receives, or is made aware of any comment, message, post, review, or complaint indicating scam-related activity, fraud, financial deception, Ponzi-scheme behavior, pump-and-dump schemes, or any form of consumer harm linked to the advertiser's services, the campaign will be <strong style="color:#0f172a">discontinued immediately without prior notice.</strong></p>
+          <p style="font-size:13px;color:#475569;line-height:1.8;margin:0"><strong style="color:#dc2626">No Exceptions:</strong> This policy applies regardless of whether the complaint is verified, under investigation, or disputed by the advertiser. Detection of a single credible scam-related signal is sufficient grounds for termination.</p>
+        </div>
+        <div>
+          <p style="font-size:13px;color:#475569;line-height:1.8;margin-bottom:8px"><strong style="color:#dc2626">Payment Non-Refundable:</strong> All payments made to Growthly Digital Marketing — including service fees, ad spend management charges, and creative production costs — are <strong style="color:#0f172a">strictly non-refundable</strong> upon campaign discontinuation under this clause.</p>
+          <p style="font-size:13px;color:#475569;line-height:1.8;margin:0"><strong style="color:#dc2626">Legal Reporting:</strong> Growthly Digital Marketing reserves the right to report confirmed fraudulent activity to relevant authorities including SECP, FIA Cybercrime Wing, and Meta's Trust & Safety team, without any obligation to inform the advertiser.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- General Terms -->
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:28px;margin-bottom:18px">
+      <h3 style="font-size:15px;font-weight:800;color:#0f172a;margin-bottom:16px;display:flex;align-items:center;gap:8px"><span>📜</span> General Terms & Conditions</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div>
+          <p style="font-size:12.5px;color:#475569;line-height:1.8;margin-bottom:8px"><strong style="color:#0f172a">1. Scope of Services:</strong> Growthly Digital Marketing provides digital advertising management services only. We do not endorse, guarantee, or verify the financial products or investment returns of any advertiser.</p>
+          <p style="font-size:12.5px;color:#475569;line-height:1.8;margin-bottom:8px"><strong style="color:#0f172a">2. Ad Account Ownership:</strong> The advertiser's Meta Business Manager and ad account remain the property of the advertiser at all times. Growthly Digital Marketing operates as an authorized agent only.</p>
+          <p style="font-size:12.5px;color:#475569;line-height:1.8;margin-bottom:8px"><strong style="color:#0f172a">3. Content Approval:</strong> All ad creatives, copy, and landing page content must be pre-approved by the advertiser before publication. The advertiser bears full legal responsibility for all published content.</p>
+          <p style="font-size:12.5px;color:#475569;line-height:1.8;margin:0"><strong style="color:#0f172a">4. Performance Disclaimer:</strong> Growthly Digital Marketing does not guarantee specific ad performance metrics including impressions, clicks, conversions, or return on ad spend (ROAS).</p>
+        </div>
+        <div>
+          <p style="font-size:12.5px;color:#475569;line-height:1.8;margin-bottom:8px"><strong style="color:#0f172a">5. Confidentiality:</strong> Both parties agree to keep all campaign data, strategies, and business information strictly confidential and not to disclose to any third party without written consent.</p>
+          <p style="font-size:12.5px;color:#475569;line-height:1.8;margin-bottom:8px"><strong style="color:#0f172a">6. Governing Law:</strong> These terms are governed by the laws of Pakistan. Any disputes shall be subject to the exclusive jurisdiction of courts in Islamabad/Lahore.</p>
+          <p style="font-size:12.5px;color:#475569;line-height:1.8;margin-bottom:8px"><strong style="color:#0f172a">7. Amendments:</strong> Growthly Digital Marketing reserves the right to amend these terms at any time. Continued engagement constitutes acceptance of the updated terms.</p>
+          <p style="font-size:12.5px;color:#475569;line-height:1.8;margin:0"><strong style="color:#0f172a">8. Indemnification:</strong> The advertiser agrees to indemnify and hold harmless Growthly Digital Marketing from any claims, damages, or legal costs arising from the advertiser's content, products, or services.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer signature -->
+    <div style="background:#f1f5f9;border:1px solid #e2e8f0;border-radius:10px;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#0f172a">Growthly Digital Marketing Pvt Ltd</div>
+        <div style="font-size:11.5px;color:#64748b;margin-top:2px">Digital Advertising · Performance Marketing · Financial Services Campaigns</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:11px;color:#94a3b8">Document Version 1.0 · 2025</div>
+        <div style="font-size:11px;color:#94a3b8;margin-top:2px">All rights reserved · Growthly Digital Marketing Pvt Ltd</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- LEGAL -->
+<section class="legal-sec" id="legal">
+  <div class="wrap">
+    <div class="eyebrow reveal">Legal & Compliance</div>
+    <h2 class="sec-h reveal">Policies & Disclaimer</h2>
+    <div class="legal-grid">
+      <div class="legal-card reveal">
+        <h3><span class="l-ic">🔒</span> Privacy Policy</h3>
+        <p><strong>Data Collection:</strong> We collect only your Telegram username for channel access and communication. No sensitive personal data is stored.</p>
+        <p><strong>Usage:</strong> Your information is never sold or shared with third parties. Used solely for service delivery.</p>
+        <p><strong>Your Rights:</strong> Request deletion of your data anytime via our Telegram contact.</p>
+      </div>
+      <div class="legal-card reveal">
+        <h3><span class="l-ic">📋</span> Terms & Conditions</h3>
+        <p><strong>Usage:</strong> All content is for educational and informational purposes only — not financial advice.</p>
+        <p><strong>Conduct:</strong> Respectful behaviour is required. Spam or abuse leads to immediate removal from the channel.</p>
+        <p><strong>Modifications:</strong> We reserve the right to update terms at any time with prior notice to members.</p>
+      </div>
+      <div class="legal-card reveal">
+        <h3><span class="l-ic">⚠️</span> Risk Disclaimer</h3>
+        <p><strong>Risk Warning:</strong> Forex trading involves significant financial risk. You may lose all or more than your invested capital.</p>
+        <p><strong>Not Financial Advice:</strong> All signals and analysis are strictly educational. Always make your own independent decisions.</p>
+        <p><strong>Past Performance:</strong> Previous results do not guarantee future performance. Trade responsibly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ GROWTHLY T&C SECTION ═══ -->
+<style>
+@media(max-width:768px){
+  .gdm-grid2{grid-template-columns:1fr!important}
+  .gdm-grid3{grid-template-columns:1fr!important}
+  .gdm-head{flex-direction:column!important}
+  #gdm-terms{padding:56px 20px!important}
+  .gdm-footer{flex-direction:column!important;text-align:left!important}
+}
+</style>
+<section id="gdm-terms" style="background:#f8fafc;border-top:3px solid #e2e8f0;padding:72px 48px;color:#1e293b">
+  <div style="max-width:960px;margin:0 auto">
+
+    <!-- Header -->
+    <div class="gdm-head" style="display:flex;align-items:flex-start;gap:20px;margin-bottom:40px;flex-wrap:wrap">
+      <div style="background:#1e293b;border-radius:12px;padding:12px 18px;display:flex;align-items:center;gap:10px;flex-shrink:0">
+        <span style="font-size:18px">⚖️</span>
+        <div>
+          <div style="font-size:11px;font-weight:800;color:#94a3b8;letter-spacing:2px;text-transform:uppercase">Official Policy</div>
+          <div style="font-size:13px;font-weight:700;color:#fff;margin-top:2px">Growthly Digital Marketing Pvt Ltd</div>
+        </div>
+      </div>
+      <div>
+        <h2 style="font-size:clamp(20px,3vw,28px);font-weight:800;color:#0f172a;letter-spacing:-.5px;line-height:1.15;margin-bottom:6px">Terms & Conditions — Forex, Cryptocurrency &amp; Financial Services Advertisements</h2>
+        <p style="font-size:12.5px;color:#64748b;font-weight:500">Effective Date: January 1, 2025 &nbsp;|&nbsp; Last Updated: May 2025 &nbsp;|&nbsp; Jurisdiction: Pakistan &amp; International</p>
+      </div>
+    </div>
+
+    <!-- Intro notice -->
+    <div style="background:#fff;border:1px solid #e2e8f0;border-left:4px solid #2563eb;border-radius:10px;padding:18px 22px;margin-bottom:32px">
+      <p style="font-size:13.5px;color:#334155;line-height:1.8"><strong style="color:#1e293b">Important Notice:</strong> By engaging Growthly Digital Marketing Pvt Ltd ("the Agency") for advertising services related to Forex trading, Cryptocurrency, or any Financial Services, the Client confirms full acceptance of the following Terms and Conditions. These terms are legally binding and govern all advertising campaigns managed or executed on behalf of the Client across Meta (Facebook/Instagram), Google, and other digital platforms.</p>
+    </div>
+
+    <!-- Terms Grid -->
+    <div class="gdm-grid2" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
+
+      <!-- Card 1 -->
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:22px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <div style="width:32px;height:32px;background:#dbeafe;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">📋</div>
+          <h3 style="font-size:14px;font-weight:700;color:#1e293b">1. Meta Ads Permission — Mandatory Requirement</h3>
+        </div>
+        <p style="font-size:12.5px;color:#475569;line-height:1.8;margin-bottom:8px">The Client must obtain and maintain valid <strong style="color:#1e293b">Meta Financial Advertising Authorization</strong> prior to the commencement of any campaign related to Forex, Cryptocurrency, CFDs, Binary Options, or any regulated financial instruments.</p>
+        <p style="font-size:12.5px;color:#475569;line-height:1.8">Growthly Digital Marketing Pvt Ltd <strong style="color:#dc2626">will not be held liable</strong> for campaign rejection, ad account suspension, or policy violations arising from the Client's failure to secure the required Meta permissions. Obtaining such authorization is solely the Client's responsibility.</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:22px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <div style="width:32px;height:32px;background:#dcfce7;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">🌐</div>
+          <h3 style="font-size:14px;font-weight:700;color:#1e293b">2. Active Landing Page / Website — Mandatory</h3>
+        </div>
+        <p style="font-size:12.5px;color:#475569;line-height:1.8;margin-bottom:8px">A live, accessible, and compliant <strong style="color:#1e293b">landing page or website</strong> is required before any financial advertisement campaign is launched. The landing page must include: a clear service description, risk disclaimers, privacy policy, terms of service, and legal contact information.</p>
+        <p style="font-size:12.5px;color:#475569;line-height:1.8">Campaigns will not be initiated until the Client's landing page is reviewed and approved by the Agency as policy-compliant. The Client is responsible for maintaining the availability and accuracy of all landing page content throughout the campaign duration.</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:22px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <div style="width:32px;height:32px;background:#fef9c3;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">🏢</div>
+          <h3 style="font-size:14px;font-weight:700;color:#1e293b">3. Registered Business Entity — Required</h3>
+        </div>
+        <p style="font-size:12.5px;color:#475569;line-height:1.8;margin-bottom:8px">The Client must be a <strong style="color:#1e293b">legally registered business entity</strong> — sole proprietorship, private limited company, or equivalent — with valid business registration documentation. Advertising financial services as an unregistered individual is not permitted under our policy.</p>
+        <p style="font-size:12.5px;color:#475569;line-height:1.8">Proof of business registration, trade license, or relevant regulatory approval must be submitted to the Agency before campaign setup. Misrepresentation of business status constitutes grounds for immediate contract termination without refund.</p>
+      </div>
+
+      <!-- Card 4 -->
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:22px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <div style="width:32px;height:32px;background:#fee2e2;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">⚠️</div>
+          <h3 style="font-size:14px;font-weight:700;color:#1e293b">4. Regulatory Compliance — Client Obligation</h3>
+        </div>
+        <p style="font-size:12.5px;color:#475569;line-height:1.8;margin-bottom:8px">The Client warrants that their financial service — including Forex signals, trading courses, cryptocurrency services, or investment advisory — complies with all applicable <strong style="color:#1e293b">local and international financial regulations</strong>. This includes but is not limited to FCA (UK), SECP (Pakistan), ASIC (Australia), CySEC (EU), and SEC (US) requirements where applicable.</p>
+        <p style="font-size:12.5px;color:#475569;line-height:1.8">Growthly Digital Marketing Pvt Ltd does not verify the regulatory status of the Client's financial services. Full legal compliance remains the Client's sole responsibility.</p>
+      </div>
+
+      <!-- Card 5 -->
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:22px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <div style="width:32px;height:32px;background:#fce7f3;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">📣</div>
+          <h3 style="font-size:14px;font-weight:700;color:#1e293b">5. Prohibited Content in Ad Creatives</h3>
+        </div>
+        <p style="font-size:12.5px;color:#475569;line-height:1.8;margin-bottom:8px">Ad creatives submitted by the Client must not contain: guaranteed profit claims, misleading return figures, unauthorized celebrity endorsements, false testimonials, get-rich-quick messaging, or any content that violates Meta Advertising Policies for Financial Products.</p>
+        <p style="font-size:12.5px;color:#475569;line-height:1.8">All creatives must include appropriate <strong style="color:#1e293b">risk warnings</strong> such as: <em>"Trading involves risk. Past performance is not indicative of future results."</em> The Agency reserves the right to reject or modify non-compliant creatives prior to publishing.</p>
+      </div>
+
+      <!-- Card 6 -->
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:22px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <div style="width:32px;height:32px;background:#ede9fe;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">🔒</div>
+          <h3 style="font-size:14px;font-weight:700;color:#1e293b">6. Data Privacy & Lead Handling</h3>
+        </div>
+        <p style="font-size:12.5px;color:#475569;line-height:1.8;margin-bottom:8px">Any leads or user data generated through campaigns managed by Growthly Digital Marketing Pvt Ltd must be handled by the Client in full compliance with applicable <strong style="color:#1e293b">data protection laws</strong>, including GDPR (EU), PDPA (Pakistan), and applicable platform-specific data policies.</p>
+        <p style="font-size:12.5px;color:#475569;line-height:1.8">The Client must maintain an active and accessible Privacy Policy on their website that clearly discloses how user data is collected, stored, and used. Failure to maintain data privacy compliance may result in campaign suspension.</p>
+      </div>
+    </div>
+
+    <!-- SCAM / FRAUD — CRITICAL BOX -->
+    <div style="background:#fff0f0;border:1.5px solid #fca5a5;border-left:5px solid #dc2626;border-radius:12px;padding:24px 26px;margin-bottom:20px">
+      <div style="display:flex;align-items:flex-start;gap:14px">
+        <div style="font-size:28px;flex-shrink:0;margin-top:2px">🚨</div>
+        <div>
+          <h3 style="font-size:15px;font-weight:800;color:#7f1d1d;margin-bottom:10px;letter-spacing:-.2px">7. Fraud, Scam & Deceptive Practice — Zero Tolerance Policy</h3>
+          <p style="font-size:13px;color:#991b1b;line-height:1.85;margin-bottom:10px"><strong>Growthly Digital Marketing Pvt Ltd operates a strict Zero Tolerance policy against any form of financial fraud, scam, or deceptive practice.</strong> This includes investment scams, Ponzi schemes, fake signal services, unauthorized fund management, misleading trading platforms, and any service designed to deceive or defraud end users.</p>
+          <p style="font-size:13px;color:#991b1b;line-height:1.85;margin-bottom:10px">If any <strong>scam-related comment, user complaint, fraud allegation, or deceptive content</strong> is detected — whether on the Client's advertisement, landing page, social media accounts, Telegram channels, or through user reports — the Agency reserves the unconditional right to:</p>
+          <ul style="font-size:12.5px;color:#7f1d1d;line-height:2;padding-left:18px;margin-bottom:10px">
+            <li><strong>Immediately suspend all active campaigns</strong> without prior notice to the Client</li>
+            <li><strong>Permanently terminate the client agreement</strong> with immediate effect</li>
+            <li><strong>Report the matter</strong> to the relevant platform (Meta, Google) and applicable regulatory authorities</li>
+            <li><strong>Preserve all records</strong> of the campaign, communications, and evidence for legal purposes</li>
+          </ul>
+          <div style="background:#fee2e2;border-radius:8px;padding:12px 16px;border:1px solid #fca5a5">
+            <p style="font-size:12.5px;color:#7f1d1d;font-weight:700;line-height:1.7">⛔ ALL PAYMENTS ARE NON-REFUNDABLE UPON SCAM DETECTION: In the event of immediate campaign discontinuation due to fraud or scam detection, all service fees, ad spend management fees, setup fees, and any other payments made to Growthly Digital Marketing Pvt Ltd are strictly non-refundable. The Agency's administrative costs, platform fees, and work already performed will not be reimbursed under any circumstances. By engaging our services, the Client unconditionally agrees to this policy.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional terms grid row -->
+    <div class="gdm-grid3" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px">
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px">
+        <div style="font-size:13px;font-weight:700;color:#1e293b;margin-bottom:8px;display:flex;align-items:center;gap:7px"><span>💳</span> Payment & Billing</div>
+        <p style="font-size:12px;color:#475569;line-height:1.75">All service fees are due in advance. Ad budget is separate from agency fees. No campaign will be launched without cleared payment. Chargebacks are contested and subject to legal action.</p>
+      </div>
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px">
+        <div style="font-size:13px;font-weight:700;color:#1e293b;margin-bottom:8px;display:flex;align-items:center;gap:7px"><span>📊</span> Reporting & Results</div>
+        <p style="font-size:12px;color:#475569;line-height:1.75">The Agency provides performance reporting but does not guarantee specific leads, conversions, or ROI. Ad performance depends on market conditions, targeting, budget, and platform algorithms outside the Agency's control.</p>
+      </div>
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px">
+        <div style="font-size:13px;font-weight:700;color:#1e293b;margin-bottom:8px;display:flex;align-items:center;gap:7px"><span>📝</span> Amendments</div>
+        <p style="font-size:12px;color:#475569;line-height:1.75">Growthly Digital Marketing Pvt Ltd reserves the right to update these Terms at any time. Continued engagement with the Agency's services following any update constitutes the Client's acceptance of the revised Terms.</p>
+      </div>
+    </div>
+
+    <!-- Footer of section -->
+    <div class="gdm-footer" style="background:#f1f5f9;border:1px solid #e2e8f0;border-radius:10px;padding:16px 22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-size:12px;font-weight:700;color:#1e293b;margin-bottom:3px">Growthly Digital Marketing Pvt Ltd</div>
+        <div style="font-size:11px;color:#64748b">Digital Advertising Agency · Financial Services Marketing · Registered Entity</div>
+      </div>
+      <div style="font-size:11px;color:#94a3b8;text-align:right">
+        These terms are governed by the laws of Pakistan.<br>For queries: contact via official business channels.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <a href="#" class="f-logo">
+    <div class="n-icon">GF</div>
+    <div class="n-text"><b style="color:#fff">GrowFX</b><span>Get Set Grow</span></div>
+  </a>
+  <p class="f-tag">Professional Forex Signals · Real-Time Analysis · Get Set Grow</p>
+  <div>
+    <a href="#join" class="f-tg">
+      <svg style="width:16px;height:16px" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.932z"/></svg>
+      Join GrowFX — Get Set Grow
+    </a>
+  </div>
+  <div class="f-links">
+    <a href="#signals">Signals</a>
+    <a href="#news">News</a>
+    <a href="#blog">Blog</a>
+    <a href="#faq">FAQ</a>
+    <a href="#about">About</a>
+    <a href="#gdm-terms">Advertiser Policy</a>
+    <a href="#legal">Privacy Policy</a>
+    <a href="#legal">Terms</a>
+    <a href="#legal">Disclaimer</a>
+  </div>
+  <p class="f-copy">© 2025 GrowFX. All rights reserved. Forex trading involves substantial risk of loss. Past performance is not indicative of future results.</p>
+</footer>
+
+<script>
+/* ── FONT LOADER ── */
+if('fonts' in document){
+  [400,500,600,700,800].forEach(w=>{
+    new FontFace('Inter','url(https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2)',{weight:String(w),display:'swap'})
+    .load().then(f=>document.fonts.add(f)).catch(()=>{});
+  });
+}
+
+/* ── TICKER ── */
+const tPairs=[
+  {p:'EUR/USD',v:'1.0856',c:'+0.42%',u:true},{p:'GBP/USD',v:'1.2734',c:'+0.28%',u:true},
+  {p:'USD/JPY',v:'148.92',c:'-0.15%',u:false},{p:'XAU/USD',v:'2,318',c:'+0.63%',u:true},
+  {p:'BTC/USD',v:'74,162',c:'+1.2%',u:true},{p:'USD/CAD',v:'1.3621',c:'-0.09%',u:false},
+  {p:'AUD/USD',v:'0.6544',c:'+0.18%',u:true},{p:'GBP/JPY',v:'192.34',c:'+0.33%',u:true},
+  {p:'USD/CHF',v:'0.9012',c:'-0.22%',u:false},{p:'ETH/USD',v:'2,015',c:'-0.8%',u:false},
+  {p:'NZD/USD',v:'0.5987',c:'+0.11%',u:true},{p:'EUR/GBP',v:'0.8534',c:'-0.11%',u:false},
+];
+const tEl=document.getElementById('tickerEl');
+[...tPairs,...tPairs].forEach(d=>{
+  const e=document.createElement('div');e.className='ti';
+  e.innerHTML=`<span class="ti-dot ${d.u?'u':'d'}"></span><span class="ti-pair">${d.p}</span><span class="ti-price">${d.v}</span><span class="${d.u?'ti-up':'ti-dn'}">${d.u?'▲':'▼'} ${d.c}</span>`;
+  tEl.appendChild(e);
+});
+
+/* ── HERO ANIMATED CANDLESTICK CHART ── */
+const canvas=document.getElementById('heroCanvas');
+const ctx=canvas.getContext('2d');
+function rsz(){canvas.width=canvas.offsetWidth;canvas.height=canvas.offsetHeight}
+rsz();window.addEventListener('resize',rsz);
+
+// Generate candle data
+const candles=[];
+let price=0.5;
+for(let i=0;i<220;i++){
+  const o=price;
+  const move=(Math.random()-.47)*.018;
+  price=Math.max(.15,Math.min(.92,price+move));
+  const c=price;
+  const range=Math.abs(c-o);
+  candles.push({o,c,h:Math.max(o,c)+Math.random()*range*.8,l:Math.min(o,c)-Math.random()*range*.8});
+}
+
+let offset=0,anim=true;
+function drawHero(){
+  const W=canvas.width,H=canvas.height;
+  if(!W||!H)return;
+  ctx.clearRect(0,0,W,H);
+  // grid
+  ctx.strokeStyle='rgba(255,255,255,0.035)';ctx.lineWidth=1;
+  for(let i=1;i<7;i++){const y=H/7*i;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+  for(let i=1;i<10;i++){const x=W/10*i;ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}
+  // candles
+  const VIS=72,cw=W/VIS*.5,si=Math.floor(offset)%candles.length;
+  for(let i=0;i<VIS;i++){
+    const idx=(si+i)%candles.length,c=candles[idx];
+    const x=(i/VIS)*W+W/VIS*.25;
+    const bull=c.c>=c.o;
+    const col=bull?'rgba(16,185,129,.9)':'rgba(239,68,68,.8)';
+    const oY=H-c.o*H*.72-H*.1,cY=H-c.c*H*.72-H*.1;
+    const hY=H-c.h*H*.72-H*.1,lY=H-c.l*H*.72-H*.1;
+    ctx.strokeStyle=col;ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(x,hY);ctx.lineTo(x,lY);ctx.stroke();
+    ctx.fillStyle=col;
+    const bt=Math.min(oY,cY),bh=Math.max(Math.abs(cY-oY),2);
+    ctx.fillRect(x-cw/2,bt,cw,bh);
+  }
+  // MA line
+  ctx.beginPath();ctx.strokeStyle='rgba(59,130,246,.55)';ctx.lineWidth=1.8;
+  for(let i=0;i<VIS;i++){
+    const idx=(si+i)%candles.length,c=candles[idx];
+    const x=(i/VIS)*W+W/VIS*.25;
+    const y=H-((c.o+c.c)/2)*H*.72-H*.1;
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
+  ctx.stroke();
+  // right glow
+  const g=ctx.createLinearGradient(W*.4,0,W,0);
+  g.addColorStop(0,'rgba(37,99,235,0)');g.addColorStop(1,'rgba(37,99,235,0.07)');
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+}
+function loop(){if(!anim)return;offset+=.15;if(offset>=candles.length)offset=0;drawHero();requestAnimationFrame(loop)}
+loop();
+document.addEventListener('visibilitychange',()=>{anim=!document.hidden;if(anim)loop()});
+
+/* ── LIVE STATUS BOX COUNTER ANIMATION ── */
+function countUp(el,target,suffix,duration){
+  let start=0,step=target/60;
+  const t=setInterval(()=>{
+    start+=step;if(start>=target){clearInterval(t);el.innerHTML=`${target.toLocaleString()}${suffix}`;}
+    else el.innerHTML=`${Math.floor(start).toLocaleString()}${suffix}`;
+  },duration/60);
+}
+
+/* ── NEWS RSS FEED ── */
+const newsData=[
+  {cat:'forex',icon:'💱',title:'Fed Holds Rates Steady — Dollar Weakens Against Majors',snippet:'The Federal Reserve kept interest rates unchanged, sending the US Dollar lower as traders repriced rate cut expectations for September.',time:'2h ago',src:'Reuters'},
+  {cat:'gold',icon:'🥇',title:'Gold Breaks $2,300 — Technical Breakout or Bull Trap?',snippet:'XAU/USD cleared a key resistance zone as risk sentiment improved. Analysts divided on whether this signals a new rally or a fakeout.',time:'3h ago',src:'Bloomberg'},
+  {cat:'crypto',icon:'₿',title:'Bitcoin Surges Past $74,000 — Institutional Buying Intensifies',snippet:'BTC/USD climbed to its highest level in 3 months as on-chain data shows large wallet accumulation continuing at current price levels.',time:'4h ago',src:'CoinDesk'},
+  {cat:'forex',icon:'🇪🇺',title:'EUR/USD Reaches 3-Month High on ECB Policy Divergence',snippet:'The Euro gained ground against the Dollar after ECB officials signaled a more hawkish stance than markets had previously priced in.',time:'5h ago',src:'FT'},
+  {cat:'oil',icon:'🛢️',title:'Crude Oil Drops 2% as OPEC+ Output Increase Rumors Circulate',snippet:'WTI crude fell sharply after reports emerged of internal OPEC+ disagreements over production quotas for the next quarter.',time:'6h ago',src:'CNBC'},
+  {cat:'crypto',icon:'⟠',title:'Ethereum ETF Inflows Hit $480M — Record Weekly Figure',snippet:'Spot Ethereum ETFs in the US recorded their highest-ever weekly net inflow figure, signaling growing mainstream institutional demand.',time:'8h ago',src:'TheBlock'},
+];
+function loadNews(){
+  const grid=document.getElementById('newsGrid');
+  grid.innerHTML=newsData.map(n=>`
+    <div class="news-card">
+      <div class="news-cat ${n.cat}">${n.icon} ${n.cat.toUpperCase()}</div>
+      <div class="news-title">${n.title}</div>
+      <div class="news-snippet">${n.snippet}</div>
+      <div class="news-meta"><span class="news-time">${n.time}</span><span class="news-src">${n.src}</span></div>
+    </div>
+  `).join('');
+}
+loadNews();
+
+/* ── Q&A TOGGLE ── */
+function toggleQA(el){
+  const item=el.parentElement;
+  const ans=item.querySelector('.qa-a');
+  const isOpen=item.classList.contains('open');
+  document.querySelectorAll('.qa-item.open').forEach(i=>{
+    i.classList.remove('open');i.querySelector('.qa-a').style.maxHeight='0';
+  });
+  if(!isOpen){item.classList.add('open');ans.style.maxHeight=ans.scrollHeight+'px';}
+}
+
+/* ── SCROLL REVEAL ── */
+const revEls=document.querySelectorAll('.reveal');
+const ro=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const siblings=[...e.target.parentElement.children];
+      const d=siblings.indexOf(e.target)*65;
+      setTimeout(()=>e.target.classList.add('vis'),d);
+      ro.unobserve(e.target);
+    }
+  });
+},{threshold:.1});
+revEls.forEach(el=>ro.observe(el));
+
+/* ── NAV SHADOW ── */
+window.addEventListener('scroll',()=>{
+  document.querySelector('nav').style.boxShadow=window.scrollY>10?'0 4px 28px rgba(0,0,0,.45)':'none';
+});
+
+/* ── LIVE COUNTER UPDATES (simulate live data) ── */
+const pipEl=document.getElementById('todayPips');
+const cntEl=document.getElementById('activeCount');
+let pips=485;
+setInterval(()=>{
+  pips+=Math.floor(Math.random()*8);
+  pipEl.innerHTML=`+${pips}`;
+},12000);
+</script>
+</body>
+</html>
